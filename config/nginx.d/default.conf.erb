@@ -1,0 +1,54 @@
+# Do not send nginx version number in error pages or server header
+server_tokens off;
+
+add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self'; frame-src 'self'; object-src 'none'";
+
+server {
+    listen            <%= ENV['OPENSHIFT_PHP_IP'] %>:<%= ENV['OPENSHIFT_PHP_PORT'] %>;
+    server_name       <%= ENV['OPENSHIFT_APP_DNS'] %>;
+
+    set_real_ip_from  <%= ENV['OPENSHIFT_PHP_IP'] %>;
+    real_ip_header    X-Forwarded-For;
+
+    add_header X-Frame-Options DENY;
+    add_header X-Content-Type-Options nosniff;
+    add_header Strict-Transport-Security "max-age=31536000; includeSubdomains;";
+
+    add_header Cache-Control "no-cache, no-store";
+    add_header Pragma "no-cache";
+    expires -1;
+
+    root              <%= ENV['OPENSHIFT_REPO_DIR'] %><%= ENV['NGINX_WWW_ROOT'] %>;
+    index             index.php;
+
+    # php file goes straigth to backend
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_pass   unix:<%= ENV['OPENSHIFT_DATA_DIR'] %>hhvm.sock;
+        fastcgi_index  index.php;
+        fastcgi_param  SCRIPT_FILENAME   $document_root$fastcgi_script_name;
+        include        fastcgi_params;
+        include        openshift_params;
+
+        # uncomment to export all environment variables to fastcgi
+        #include        <%= ENV['OPENSHIFT_REPO_DIR'] %>/config/nginx.d/export_env;
+    }
+
+    # avoid unnecessary log
+    location = /favicon.ico {
+        access_log off;
+        log_not_found off;
+    }
+
+    location = /robots.txt {
+        access_log off;
+        log_not_found off;
+    }
+
+    location /rsrc.php {
+        rewrite ^/rsrc.php/(.*)$ /rsrc.php?path=$1 last;
+    }
+
+    error_page 400 401 402 403 404 500 /error.php;
+    client_max_body_size 25M;
+}

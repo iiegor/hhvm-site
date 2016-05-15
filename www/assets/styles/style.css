@@ -1,0 +1,136 @@
+html,
+body {
+	font-family: sans-serif;
+}
+
+body {
+	background-color: #EEE;
+	margin: 0;
+	padding: 0;
+}
+
+h1, p {
+	margin: 0;
+}
+
+/**
+ * Utilities
+ */
+.public/u-alignCenter {
+	margin: 0 auto;
+	width: 1200px;
+}
+
+@media (min-width: 960px) {
+	.public/u-alignCenter {
+		width: 960px;
+	}
+}
+
+@media (min-width: 1012px) {
+	.public/u-alignCenter {
+		width: 1012px;
+	}
+}
+
+.public/u-alignItemsMiddle {
+	display: flex;
+	align-items: center;
+}
+
+/**
+ * Root element
+ */
+.public/_li { 
+	overflow: initial;
+}
+
+/**
+ * Navbar element
+ */
+.Navbar/root {
+	position: relative;
+	height: 54px;
+	background-color: #FFF;
+	color: #141823;
+	z-index: 1000;
+	border-bottom: 4px solid #eee;
+	box-shadow: 0 1px 1px rgba(0,0,0,.14);
+}
+
+.Navbar/navbarContainer {
+	height: 100%;
+}
+
+.Nav/root {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.Nav/navItem {
+	display: inline-block;
+	padding: 7px 8px;
+	border-radius: 3px;
+	margin-top: 13px;
+}
+
+.Nav/navItem:not(:last-of-type) {
+	margin-right: 12px;
+}
+
+.Nav/navItem:hover {
+	cursor: pointer;
+	background: #eee;
+}
+
+.NavItem/active {
+	background: #eee;
+}
+
+.NavItem/active:hover {
+	text-decoration: none;
+}
+
+.Nav/navItem.NavItem/active::after {
+	content: '';
+	position: relative;
+	display: block;
+	background: #eee;
+	margin: 0.6rem 0 0 -3.15rem;
+}
+
+.NavItem/link {
+	text-decoration: none;
+	color: inherit;
+}
+
+/**
+ * Container element
+ */
+.Container/root {
+	padding-top: 12px;
+}
+
+/**
+ * Notification element
+ */
+.Notification/root {
+	background-color: #9c9;
+	border-bottom: .125rem solid #696;
+	padding: .1rem 0 0;
+	height: 1.5rem;
+	text-align: center;
+}
+
+.Notification/notificationLink {
+	color: #fff;
+	text-decoration: none;
+	border-bottom: 1px solid;
+	font-size: 17px;
+}
+
+.Notification/error {
+	background-color: #C56A65;
+	border-bottom: .125rem solid #923434;
+}

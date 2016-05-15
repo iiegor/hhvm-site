@@ -1,0 +1,10 @@
+{
+    "name": "root/wwproject",
+    "require": {
+        "hhvm": "~3.6",
+        "facebook/xhp-lib": "2.x",
+        "hhvm/xhp-js": "~1.0.0"
+    },
+    "autoload": {
+    }
+}
